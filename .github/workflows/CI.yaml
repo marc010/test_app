@@ -25,7 +25,7 @@ jobs:
           CR_REGISTRY: crppudjmh5lksthdg9q4
           CR_REPOSITORY: my_test
           IMAGE_TAG: ${{ github.sha }}
-        run: | if  [[ ${{github.ref_name}} !=
+        run: |
           docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }} .
           docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
 
