@@ -19,7 +19,7 @@ jobs:
         with:
           registry: cr.yandex
           username: json_key
-          password: ${{ secrets.YC_REGISTRY_TOKEN }}
+          password: ${{ secrets.YC_REGISTRY_CRED }}
 
       - name: Build and push
         uses: docker/build-push-action@v5
