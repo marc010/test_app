@@ -34,7 +34,8 @@ jobs:
 
       - name: Check if tag is present
         id: check_tag
-        run: echo ::set-output name=tag::$(if [[ ${{ github.ref }} == 'refs/tags/*' ]]; then echo "${{ github.ref | replace('refs/tags/', '') }}"; else echo "NOTAG"; fi)
+        run: |
+          if [[ ${{ github.ref }} == 'refs/tags/*' ]]; then echo "${{ github.ref | replace('refs/tags/', '') }}"; else echo "NOTAG"; fi
 
 #      - name: Modify values.yaml if tag is present
 #        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
