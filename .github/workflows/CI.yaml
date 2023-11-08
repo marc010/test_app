@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - "*"
-    tags:
-      - "*"
+#    tags:
+#      - "*"
 
 jobs:
   build:
@@ -25,9 +25,27 @@ jobs:
           CR_REGISTRY: crppudjmh5lksthdg9q4
           CR_REPOSITORY: my_test
           IMAGE_TAG: ${{ github.sha }}
-        run: |
+        run: | if  [[ ${{github.ref_name}} !=
           docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }} .
           docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
 
-      - name: Show tag
-        run: echo ${{github.ref_name}}
+#      - name: Show tag
+#        run: echo ${{ github.ref_name }}
+
+      - name: Check if tag is present
+        id: check_tag
+        run: echo ::set-output name=tag::$(if [[ ${{ github.ref }} == 'refs/tags/*' ]]; then echo "${{ github.ref | replace('refs/tags/', '') }}"; else echo "NOTAG"; fi)
+
+#      - name: Modify values.yaml if tag is present
+#        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
+#        run: |
+#          sed -i 's|old_value|new_value|g' values.yaml
+#
+#      - name: Commit and push changes to values.yaml
+#        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
+#        run: |
+#          git config --global user.email "github-actions@github.com"
+#          git config --global user.name "GitHub Actions"
+#          git add values.yaml
+#          git commit -m "Update values.yaml"
+#          git push
