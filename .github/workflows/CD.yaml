@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-    - "*"
+    tags:
 
 jobs:
   build:
@@ -19,13 +18,10 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_REGISTRY_CRED }}
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
-#        env:
-#          CR_REGISTRY: crppudjmh5lksthdg9q4
-#          CR_REPOSITORY: my_test
-#          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }} .
-          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
+          docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }} .
+          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }}
+
 
 #      - name: Modify values.yaml if tag is present
 #        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
