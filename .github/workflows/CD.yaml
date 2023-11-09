@@ -41,7 +41,7 @@ jobs:
           token:  ${{ secrets.TOKEN_GITHUB }}
       - name: Change image tag
         run: |
-          sed 's/tag:.*/  tag: ${{ github.ref_name }}/g' helm/values.yaml
+          sed -i 's/tag:.*/  tag: ${{ github.ref_name }}/g' helm/values.yaml
       - name: setup git config
         run: |
           git config --global user.name "GitHub Actions Bot"
