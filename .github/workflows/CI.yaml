@@ -26,7 +26,7 @@ jobs:
         run: |
 #          echo ${{ github.ref }} | grep "tags" && \
           docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }} . ; \
-          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }} || \  # contain tag
+          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }} # || \  # contain tag
 #          # just some push
 #          docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }} . ; \
 #          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
