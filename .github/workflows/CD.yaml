@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Change image tag
+        run: |
+          sed 's\<p>version:.*\<p>version: ${{ github.ref_name }}</p>\g' my_site/index.html
       - name: Login to Yandex Cloud Container Registry
         id: login-cr
         uses: yc-actions/yc-cr-login@v1
@@ -33,15 +36,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+
       - name: GitOps - Checkout
         uses: actions/checkout@v4
         with:
           repository: marc010/test_app_infrastructure
           ref: 'main'
           token:  ${{ secrets.TOKEN_GITHUB }}
+
       - name: Change image tag
         run: |
-          sed -i 's/tag:.*/  tag: ${{ github.ref_name }}/g' helm/values.yaml
+          sed -i 's/tag:.*/tag: ${{ github.ref_name }}/g' helm/values.yaml
+
       - name: setup git config
         run: |
           git config --global user.name "GitHub Actions Bot"
