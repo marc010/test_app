@@ -18,17 +18,18 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_REGISTRY_CRED }}
 
-#      - name: Build, tag, and push image to Yandex Cloud Container Registry
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
 #        env:
 #          CR_REGISTRY: crppudjmh5lksthdg9q4
 #          CR_REPOSITORY: my_test
 #          IMAGE_TAG: ${{ github.sha }}
-#        run: |
+        run: |
+          echo ${{ github.ref }} | grep "tags" && echo 0 || echo 1
 #          docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }} .
 #          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
 
-      - name: Show tag
-        run: echo '${{ toJSON(github) }}'
+#      - name: Show tag
+#        run: echo '${{ toJSON(github) }}'
 
 #      - name: Check if tag is present
 #        id: check_tag
