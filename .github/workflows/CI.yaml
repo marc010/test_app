@@ -21,24 +21,10 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_REGISTRY_CRED }}
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
-#        env:
-#          CR_REGISTRY: crppudjmh5lksthdg9q4
-#          CR_REPOSITORY: my_test
-#          IMAGE_TAG: ${{ github.sha }}
+        env:
+          CR_REGISTRY: crppudjmh5lksthdg9q4
+          CR_REPOSITORY: netology_test_app
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }} .
-          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
-
-#      - name: Modify values.yaml if tag is present
-#        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
-#        run: |
-#          sed -i 's|old_value|new_value|g' values.yaml
-#
-#      - name: Commit and push changes to values.yaml
-#        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
-#        run: |
-#          git config --global user.email "github-actions@github.com"
-#          git config --global user.name "GitHub Actions"
-#          git add values.yaml
-#          git commit -m "Update values.yaml"
-#          git push
+          docker build -t cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
+          docker push cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }}

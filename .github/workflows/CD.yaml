@@ -3,9 +3,9 @@ name: CD
 on:
   push:
     tags:
-    - "*"
+      - "*"
     branches-ignore:
-    - "*"
+      - "*"
 
 jobs:
   build:
@@ -21,21 +21,31 @@ jobs:
           yc-sa-json-credentials: ${{ secrets.YC_REGISTRY_CRED }}
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: crppudjmh5lksthdg9q4
+          CR_REPOSITORY: netology_test_app
+          IMAGE_TAG: ${{ github.ref_name }}
         run: |
-          docker build -t cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }} .
-          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.ref_name }}
+          docker build -t cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
+          docker push cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
-
-#      - name: Modify values.yaml if tag is present
-#        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
-#        run: |
-#          sed -i 's|old_value|new_value|g' values.yaml
-#
-#      - name: Commit and push changes to values.yaml
-#        if: ${{ steps.check_tag.outputs.tag != 'NOTAG' }}
-#        run: |
-#          git config --global user.email "github-actions@github.com"
-#          git config --global user.name "GitHub Actions"
-#          git add values.yaml
-#          git commit -m "Update values.yaml"
-#          git push
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitOps - Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: https://github.com/marc010/test_app_infrastructure
+          ref: 'main'
+          token:  ${{ secrets.TOKEN_GITHUB }}
+      - name: Change image tag
+        run: |
+          sed 's/tag:.*/  tag: ${{ github.ref_name }}/g' helm/values.yaml
+      - name: setup git config
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "cd.github-actions@github.com"
+          git add .
+          git commit -m "Update values.yaml"
+          git push origin main
