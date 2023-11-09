@@ -28,7 +28,7 @@ jobs:
 #          docker push cr.yandex/crppudjmh5lksthdg9q4/my_test:${{ github.sha }}
 
       - name: Show tag
-        run: echo ${{ toJSON(github) }}
+        run: echo '${{ toJSON(github) }}'
 
 #      - name: Check if tag is present
 #        id: check_tag
