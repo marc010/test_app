@@ -36,7 +36,7 @@ jobs:
       - name: GitOps - Checkout
         uses: actions/checkout@v4
         with:
-          repository: https://github.com/marc010/test_app_infrastructure
+          repository: marc010/test_app_infrastructure
           ref: 'main'
           token:  ${{ secrets.TOKEN_GITHUB }}
       - name: Change image tag
