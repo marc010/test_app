@@ -16,7 +16,7 @@ jobs:
 
       - name: Change image tag
         run: |
-          sed 's\<p>version:.*\<p>version: ${{ github.ref_name }}</p>\g' my_site/index.html
+          sed -i 's\<p>version:.*\<p>version: ${{ github.ref_name }}</p>\g' my_site/index.html
       - name: Login to Yandex Cloud Container Registry
         id: login-cr
         uses: yc-actions/yc-cr-login@v1
